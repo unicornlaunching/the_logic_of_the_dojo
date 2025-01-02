@@ -30,6 +30,47 @@
     </div>
 
     <main>
+
+        <section>
+<!-- Add after the header, before the symbol legend -->
+<div class="executive-summary">
+    <h2>Executive Summary: Reading This Document</h2>
+
+    <p>This document formalizes Street Fighter's combat systems and Ryu's martial philosophy using predicate logic and mathematical notation. To effectively navigate this content:</p>
+
+    <ol>
+        <li><strong>Logical Symbols:</strong> Familiarize yourself with the symbol legend. Key operators include:
+            <ul>
+                <li>→ (implies): Represents cause and effect in combat</li>
+                <li>∧ (and): Shows combined conditions</li>
+                <li>∀ (for all): Indicates universal principles</li>
+            </ul>
+        </li>
+
+        <li><strong>Structure:</strong> Each section progresses from fundamental concepts to advanced applications:
+            <ul>
+                <li>Core principles and predicates</li>
+                <li>Technical implementation</li>
+                <li>Philosophical context</li>
+                <li>Street Fighter lore integration</li>
+            </ul>
+        </li>
+
+        <li><strong>Context:</strong> Each logical statement is accompanied by:
+            <ul>
+                <li>Natural language explanation</li>
+                <li>Street Fighter context</li>
+                <li>Practical application notes</li>
+            </ul>
+        </li>
+    </ol>
+
+    <p>The document merges formal logic with Street Fighter's rich lore, particularly focusing on Ryu's journey from student to master. Code implementations follow theoretical concepts, providing a complete framework for understanding both the technical and philosophical aspects of the combat system.</p>
+</div>
+
+
+        </section>
+
         <section id="fundamental-concepts">
             <h2>1. Street Fighter Core Systems in Logical Form</h2>
 
@@ -720,6 +761,279 @@ class StreetFighterAI {
                 <p class="context">SF Context: Ryu's philosophy that true growth comes through honorable combat.</p>
             </div>
 
+            <div class="logic-statement">
+                <p><strong>Hadou Evolution Path:</strong></p>
+                <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    mastersDenjinHadou(x) <span class="logical-operator implication">→</span>
+    (
+        (baseHadoken <span class="logical-operator implication">→</span> shakunetsuHadoken) <span class="logical-operator conjunction">∧</span>
+        (shakunetsuHadoken <span class="logical-operator implication">→</span> denjinHadoken) <span class="logical-operator conjunction">∧</span>
+        (denjinHadoken <span class="logical-operator implication">→</span> shinHadoken)
+    )
+]</pre>
+                <p class="context">SF Context: The evolution of Ryu's Hadou techniques from basic energy projection to mastery of both fire and electric properties.</p>
+            </div>
+
+            <div class="logic-statement">
+                <p><strong>Satsui no Hado Stages:</strong></p>
+                <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    embracesSatsui(x) <span class="logical-operator implication">→</span>
+    (
+        (stage1 <span class="logical-operator implication">→</span> chokusenhadoken) <span class="logical-operator conjunction">∧</span>
+        (stage2 <span class="logical-operator implication">→</span> ashurasenku) <span class="logical-operator conjunction">∧</span>
+        (stage3 <span class="logical-operator implication">→</span> messatsuGouHadou) <span class="logical-operator conjunction">∧</span>
+        (stage4 <span class="logical-operator implication">→</span> shunGokuSatsu)
+    )
+]</pre>
+                <p class="context">SF Context: The dark progression of techniques if Ryu were to fully embrace the killing intent.</p>
+            </div>
+
+            <div class="logic-statement">
+                <p><strong>Dojo Training Principles:</strong></p>
+                <pre>
+<span class="logical-operator quantifier">∀</span>x,t [
+    isTrainingDay(t) <span class="logical-operator implication">→</span>
+    (
+        (meditateAtDawn(x) <span class="logical-operator conjunction">∧</span>
+         practiceKata(x) <span class="logical-operator conjunction">∧</span>
+         sparWithKen(x)) <span class="logical-operator implication">→</span>
+        (
+            improveSpirit(x) <span class="logical-operator conjunction">∧</span>
+            refineTechnique(x) <span class="logical-operator conjunction">∧</span>
+            strengthenBonds(x)
+        )
+    )
+]</pre>
+                <p class="context">SF Context: Daily life at Gouken's dojo, where Ryu and Ken trained together.</p>
+            </div>
+
+            <div class="logic-statement">
+                <p><strong>Sakura's Mentorship:</strong></p>
+                <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isSakura(y)) <span class="logical-operator implication">→</span>
+    (
+        inspiresDetermination(x,y) <span class="logical-operator conjunction">∧</span>
+        teachesHumility(x,y) <span class="logical-operator conjunction">∧</span>
+        (
+            seekingGuidance(y) <span class="logical-operator implication">→</span>
+            reflectsOnJourney(x)
+        )
+    )
+]</pre>
+                <p class="context">SF Context: Ryu's relationship with his most dedicated follower, showing how teaching others leads to self-discovery.</p>
+            </div>
+
+            <div class="logic-statement">
+                <p><strong>Gouken's Final Lesson:</strong></p>
+                <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    understandsPower(x) <span class="logical-operator implication">→</span>
+    (
+        powerForDefense(x) <span class="logical-operator conjunction">∧</span>
+        strengthForProtection(x) <span class="logical-operator conjunction">∧</span>
+        victoryThroughPeace(x)
+    )
+]</pre>
+                <p class="context">SF Context: The ultimate teaching that helped Ryu resist the Satsui no Hado.</p>
+            </div>
+
+            <div class="logic-statement">
+                <p><strong>Sagat's Honor Match:</strong></p>
+                <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isSagat(y)) <span class="logical-operator implication">→</span>
+    (
+        respectfulBattle(x,y) <span class="logical-operator conjunction">∧</span>
+        overcomesPastSin(x) <span class="logical-operator conjunction">∧</span>
+        (
+            fightWithHonor(x,y) <span class="logical-operator implication">→</span>
+            mutualGrowth(x,y)
+        )
+    )
+]</pre>
+                <p class="context">SF Context: The redemption match between Ryu and Sagat, where both warriors sought to overcome their past.</p>
+            </div>
+
+            <div class="logic-statement">
+                <p><strong>Power of Nothingness Awakening:</strong></p>
+                <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    awakensNothingness(x) <span class="logical-operator implication">→</span>
+    (
+        transcendsDuality(x) <span class="logical-operator conjunction">∧</span>
+        achievesBalance(x) <span class="logical-operator conjunction">∧</span>
+        (
+            fightingIntent(x) <span class="logical-operator implication">→</span>
+            pureAction(x)
+        )
+    )
+]</pre>
+                <p class="context">SF Context: Ryu's ultimate achievement, mastering the Power of Nothingness taught by Gouken.</p>
+            </div>
+
+            <div class="logic-statement">
+                <p><strong>World Warrior Encounters:</strong></p>
+                <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    encountersWarrior(x,y) <span class="logical-operator implication">→</span>
+    (
+        studiesTechnique(x,y) <span class="logical-operator conjunction">∧</span>
+        respectsTradition(x,y) <span class="logical-operator conjunction">∧</span>
+        (
+            learnsFighting(x,y) <span class="logical-operator implication">→</span>
+            understandsCulture(x,y)
+        )
+    )
+]</pre>
+                <p class="context">SF Context: Ryu's encounters with fighters worldwide, learning not just techniques but cultural wisdom.</p>
+            </div>
+
+            <div class="concept-block">
+                <h3>5.1 The Complete Martial Code of Ansatsuken</h3>
+
+                <div class="logic-statement">
+                    <p><strong>Fundamental Principles:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    followsAnsatsuken(x) <span class="logical-operator implication">→</span>
+    (
+        respectsLife(x) <span class="logical-operator conjunction">∧</span>
+        seeksPerfection(x) <span class="logical-operator conjunction">∧</span>
+        maintainsBalance(x) <span class="logical-operator conjunction">∧</span>
+        (
+            facesChallenge(x) <span class="logical-operator implication">→</span>
+            growsStronger(x)
+        )
+    )
+]</pre>
+                    <p class="context">SF Context: The core tenets of Ansatsuken as taught by Gouken, emphasizing the preservation of life.</p>
+                </div>
+
+                <div class="logic-statement">
+                    <p><strong>The Three Virtues:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    masterOfVirtues(x) <span class="logical-operator implication">→</span>
+    (
+        (hasHumility(x) <span class="logical-operator conjunction">∧</span>
+         <span class="logical-operator negation">¬</span>seeksGlory(x)) <span class="logical-operator conjunction">∧</span>
+        (hasDiscipline(x) <span class="logical-operator conjunction">∧</span>
+         dailyTraining(x)) <span class="logical-operator conjunction">∧</span>
+        (hasWisdom(x) <span class="logical-operator conjunction">∧</span>
+         understandsBalance(x))
+    )
+]</pre>
+                    <p class="context">SF Context: The three core virtues Gouken taught to both Ryu and Ken.</p>
+                </div>
+
+                <div class="logic-statement">
+                    <p><strong>Path of the True Warrior:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x,t [
+    walksTruePath(x) <span class="logical-operator implication">→</span>
+    (
+        (meditateDaily(x) <span class="logical-operator conjunction">∧</span>
+         trainBody(x) <span class="logical-operator conjunction">∧</span>
+         cultivateSpirit(x)) <span class="logical-operator conjunction">∧</span>
+        (
+            encounterDarkness(x) <span class="logical-operator implication">→</span>
+            findLight(x)
+        ) <span class="logical-operator conjunction">∧</span>
+        (
+            gainPower(x) <span class="logical-operator implication">→</span>
+            maintainHumility(x)
+        )
+    )
+]</pre>
+                    <p class="context">SF Context: Ryu's daily practice to maintain balance between power and control.</p>
+                </div>
+
+                <div class="logic-statement">
+                    <p><strong>The Five Battle Principles:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    mastersBattlePrinciples(x) <span class="logical-operator implication">→</span>
+    (
+        (readOpponent(x) <span class="logical-operator conjunction">∧</span>
+         anticipateIntent(x)) <span class="logical-operator conjunction">∧</span>
+        (maintainDistance(x) <span class="logical-operator conjunction">∧</span>
+         controlSpace(x)) <span class="logical-operator conjunction">∧</span>
+        (timePrecisely(x) <span class="logical-operator conjunction">∧</span>
+         seizeOpportunity(x)) <span class="logical-operator conjunction">∧</span>
+        (adaptStrategy(x) <span class="logical-operator conjunction">∧</span>
+         overcomeWeakness(x)) <span class="logical-operator conjunction">∧</span>
+        (showRespect(x) <span class="logical-operator conjunction">∧</span>
+         honorOpponent(x))
+    )
+]</pre>
+                    <p class="context">SF Context: The fundamental combat principles of Ansatsuken, passed down through generations.</p>
+                </div>
+
+                <div class="logic-statement">
+                    <p><strong>Ki Energy Mastery:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    mastersKi(x) <span class="logical-operator implication">→</span>
+    (
+        canChannelHadou(x) <span class="logical-operator conjunction">∧</span>
+        (
+            (focusKi(x) <span class="logical-operator implication">→</span>
+                increasePower(x)) <span class="logical-operator conjunction">∧</span>
+            (balanceKi(x) <span class="logical-operator implication">→</span>
+                maintainControl(x)) <span class="logical-operator conjunction">∧</span>
+            (flowKi(x) <span class="logical-operator implication">→</span>
+                achieveHarmony(x))
+        )
+    )
+]</pre>
+                    <p class="context">SF Context: The foundation of Hadou techniques and spiritual growth.</p>
+                </div>
+
+                <div class="logic-statement">
+                    <p><strong>Mental Fortitude:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    hasMentalFortitude(x) <span class="logical-operator implication">→</span>
+    (
+        (facesFailure(x) <span class="logical-operator implication">→</span>
+            learnsLesson(x)) <span class="logical-operator conjunction">∧</span>
+        (facesTemptation(x) <span class="logical-operator implication">→</span>
+            maintainsPurity(x)) <span class="logical-operator conjunction">∧</span>
+        (facesFear(x) <span class="logical-operator implication">→</span>
+            findsStrength(x)) <span class="logical-operator conjunction">∧</span>
+        (
+            inBattle(x) <span class="logical-operator implication">→</span>
+            remainsFocused(x)
+        )
+    )
+]</pre>
+                    <p class="context">SF Context: The mental discipline required to resist the Satsui no Hado.</p>
+                </div>
+
+                <div class="logic-statement">
+                    <p><strong>Teaching and Legacy:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    isTeacher(x) <span class="logical-operator implication">→</span>
+    (
+        (sharesKnowledge(x,y) <span class="logical-operator conjunction">∧</span>
+         guidesGrowth(x,y)) <span class="logical-operator conjunction">∧</span>
+        (
+            makesMistake(y) <span class="logical-operator implication">→</span>
+            providesGuidance(x,y)
+        ) <span class="logical-operator conjunction">∧</span>
+        (
+            showsPromise(y) <span class="logical-operator implication">→</span>
+            nurtureTalent(x,y)
+        )
+    )
+]</pre>
+                    <p class="context">SF Context: Ryu's responsibility to pass on Gouken's teachings, as shown with Sakura.</p>
+                </div>
+            </div>
         </section>
 
         <footer>

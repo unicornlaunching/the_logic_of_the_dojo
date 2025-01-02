@@ -1,0 +1,421 @@
+/* Base styles and typography */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --accent-color: #3498db;
+    --text-color: #2c3e50;
+    --background-color: #ecf0f1;
+    --code-background: #f8f9fa;
+    --border-color: #bdc3c7;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 0;
+}
+
+/* Header styling */
+header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    padding-bottom: 1rem;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* Main content layout */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Section styling */
+section {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    border-bottom: 3px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+h3 {
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    margin-top: 2rem;
+}
+
+/* Concept blocks */
+.concept-block {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    border-left: 5px solid var(--accent-color);
+}
+
+/* Example boxes */
+.example-box {
+    background: var(--code-background);
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+}
+
+.example-box h4 {
+    color: var(--accent-color);
+    margin-top: 0;
+}
+
+/* Logical statements and equations */
+pre {
+    background: var(--code-background);
+    border-radius: 6px;
+    padding: 1.5rem;
+    font-size: 1.1rem;
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+    font-family: 'Consolas', 'Monaco', monospace;
+    line-height: 1.4;
+    white-space: pre-wrap;
+}
+
+/* Logical operators */
+.logical-operators {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 6px;
+    margin: 1rem 0;
+}
+
+.logical-operators h4 {
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Complex examples */
+.complex-example {
+    background: var(--code-background);
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+}
+
+.complex-example pre {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+}
+
+/* Lists */
+ul {
+    padding-left: 1.5rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+/* Strong emphasis */
+strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Implementation notes */
+.implementation-notes,
+.optimization-notes {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 6px;
+    margin: 1rem 0;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2rem;
+    background: var(--primary-color);
+    color: white;
+    margin-top: 3rem;
+}
+
+/* Mathematical symbols and logic statements */
+.logic-statement {
+    font-family: 'Times New Roman', serif;
+    font-size: 1.3rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    background: var(--code-background);
+    border-radius: 6px;
+}
+
+/* Pattern logic and state transitions */
+.pattern-logic,
+.state-transitions {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Frame data and resource management */
+.frame-logic,
+.resource-logic {
+    background: var(--code-background);
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    header {
+        padding: 2rem 1rem;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    main {
+        padding: 1rem;
+    }
+
+    .concept-block {
+        padding: 1rem;
+    }
+
+    pre {
+        font-size: 0.9rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        background: white;
+    }
+
+    section {
+        break-inside: avoid;
+    }
+
+    pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+}
+
+/* Logical connectives highlighting */
+.logical-operator {
+    font-weight: bold;
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+    margin: 0 0.2em;
+}
+
+.implication {
+    color: #e74c3c;  /* Red */
+    background-color: rgba(231, 76, 60, 0.1);
+    border-bottom: 2px solid #e74c3c;
+}
+
+.conjunction {
+    color: #27ae60;  /* Green */
+    background-color: rgba(39, 174, 96, 0.1);
+    border-bottom: 2px solid #27ae60;
+}
+
+.disjunction {
+    color: #f39c12;  /* Orange */
+    background-color: rgba(243, 156, 18, 0.1);
+    border-bottom: 2px solid #f39c12;
+}
+
+.negation {
+    color: #8e44ad;  /* Purple */
+    background-color: rgba(142, 68, 173, 0.1);
+    border-bottom: 2px solid #8e44ad;
+}
+
+/* Key terms highlighting */
+.key-term {
+    color: #2980b9;  /* Blue */
+    background-color: rgba(41, 128, 185, 0.1);
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+    font-weight: 600;
+}
+
+/* Logical symbols */
+.logical-symbol {
+    font-family: 'Times New Roman', serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 0 0.2em;
+}
+
+/* Enhanced pre blocks for logical statements */
+pre.logic-statement {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 1.5rem;
+    font-size: 1.3rem;
+    line-height: 1.6;
+    border-left: 5px solid var(--accent-color);
+}
+
+/* Color coding for different types of statements */
+.predicate-statement {
+    border-left: 5px solid #e74c3c;
+    background-color: rgba(231, 76, 60, 0.05);
+}
+
+.propositional-statement {
+    border-left: 5px solid #27ae60;
+    background-color: rgba(39, 174, 96, 0.05);
+}
+
+.quantifier-statement {
+    border-left: 5px solid #f39c12;
+    background-color: rgba(243, 156, 18, 0.05);
+}
+
+/* Enhanced visibility for logical sections */
+.logical-operators h4 {
+    background: linear-gradient(90deg, var(--accent-color) 0%, transparent 100%);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+}
+
+/* Symbol legend */
+.symbol-legend {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.symbol-legend h4 {
+    margin-top: 0;
+    color: var(--primary-color);
+}
+
+.symbol-legend ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.symbol-legend li {
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Hover effects for logical operators */
+.logical-operator:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+/* Animation for key terms */
+@keyframes highlight {
+    0% { background-color: rgba(41, 128, 185, 0.1); }
+    50% { background-color: rgba(41, 128, 185, 0.2); }
+    100% { background-color: rgba(41, 128, 185, 0.1); }
+}
+
+.key-term:hover {
+    animation: highlight 1s infinite;
+    cursor: help;
+}
+
+/* Enhanced visibility for mathematical symbols */
+.math-symbol {
+    font-family: 'Times New Roman', serif;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #2c3e50;
+    padding: 0 0.2em;
+}
+
+/* Color coding for different types of logic */
+.frame-logic {
+    border-left: 5px solid #3498db;
+}
+
+.resource-logic {
+    border-left: 5px solid #e67e22;
+}
+
+.pattern-logic {
+    border-left: 5px solid #2ecc71;
+}
+
+.state-transitions {
+    border-left: 5px solid #9b59b6;
+}
+
+/* Enhanced visibility for code blocks */
+pre code {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+/* Tooltip for logical symbols */
+[data-tooltip] {
+    position: relative;
+    cursor: help;
+}
+
+[data-tooltip]:after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(44, 62, 80, 0.9);
+    color: white;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+[data-tooltip]:hover:after {
+    opacity: 1;
+}

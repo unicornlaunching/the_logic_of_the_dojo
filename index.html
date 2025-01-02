@@ -1033,6 +1033,407 @@ class StreetFighterAI {
 ]</pre>
                     <p class="context">SF Context: Ryu's responsibility to pass on Gouken's teachings, as shown with Sakura.</p>
                 </div>
+
+                <div class="logic-statement">
+                    <p><strong>Hadou Evolution Path:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    mastersDenjinHadou(x) <span class="logical-operator implication">→</span>
+    (
+        (baseHadoken <span class="logical-operator implication">→</span> shakunetsuHadoken) <span class="logical-operator conjunction">∧</span>
+        (shakunetsuHadoken <span class="logical-operator implication">→</span> denjinHadoken) <span class="logical-operator conjunction">∧</span>
+        (denjinHadoken <span class="logical-operator implication">→</span> shinHadoken)
+    )
+]</pre>
+                    <p class="context">SF Context: The evolution of Ryu's Hadou techniques from basic energy projection to mastery of both fire and electric properties.</p>
+                </div>
+
+                <div class="logic-statement">
+                    <p><strong>Satsui no Hado Stages:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    embracesSatsui(x) <span class="logical-operator implication">→</span>
+    (
+        (stage1 <span class="logical-operator implication">→</span> chokusenhadoken) <span class="logical-operator conjunction">∧</span>
+        (stage2 <span class="logical-operator implication">→</span> ashurasenku) <span class="logical-operator conjunction">∧</span>
+        (stage3 <span class="logical-operator implication">→</span> messatsuGouHadou) <span class="logical-operator conjunction">∧</span>
+        (stage4 <span class="logical-operator implication">→</span> shunGokuSatsu)
+    )
+]</pre>
+                    <p class="context">SF Context: The dark progression of techniques if Ryu were to fully embrace the killing intent.</p>
+                </div>
+
+                <div class="logic-statement">
+                    <p><strong>Dojo Training Principles:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x,t [
+    isTrainingDay(t) <span class="logical-operator implication">→</span>
+    (
+        (meditateAtDawn(x) <span class="logical-operator conjunction">∧</span>
+         practiceKata(x) <span class="logical-operator conjunction">∧</span>
+         sparWithKen(x)) <span class="logical-operator implication">→</span>
+        (
+            improveSpirit(x) <span class="logical-operator conjunction">∧</span>
+            refineTechnique(x) <span class="logical-operator conjunction">∧</span>
+            strengthenBonds(x)
+        )
+    )
+]</pre>
+                    <p class="context">SF Context: Daily life at Gouken's dojo, where Ryu and Ken trained together.</p>
+                </div>
+
+                <div class="logic-statement">
+                    <p><strong>Sakura's Mentorship:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isSakura(y)) <span class="logical-operator implication">→</span>
+    (
+        inspiresDetermination(x,y) <span class="logical-operator conjunction">∧</span>
+        teachesHumility(x,y) <span class="logical-operator conjunction">∧</span>
+        (
+            seekingGuidance(y) <span class="logical-operator implication">→</span>
+            reflectsOnJourney(x)
+        )
+    )
+]</pre>
+                    <p class="context">SF Context: Ryu's relationship with his most dedicated follower, showing how teaching others leads to self-discovery.</p>
+                </div>
+
+                <div class="logic-statement">
+                    <p><strong>Gouken's Final Lesson:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    understandsPower(x) <span class="logical-operator implication">→</span>
+    (
+        powerForDefense(x) <span class="logical-operator conjunction">∧</span>
+        strengthForProtection(x) <span class="logical-operator conjunction">∧</span>
+        victoryThroughPeace(x)
+    )
+]</pre>
+                    <p class="context">SF Context: The ultimate teaching that helped Ryu resist the Satsui no Hado.</p>
+                </div>
+
+                <div class="logic-statement">
+                    <p><strong>Sagat's Honor Match:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isSagat(y)) <span class="logical-operator implication">→</span>
+    (
+        respectfulBattle(x,y) <span class="logical-operator conjunction">∧</span>
+        overcomesPastSin(x) <span class="logical-operator conjunction">∧</span>
+        (
+            fightWithHonor(x,y) <span class="logical-operator implication">→</span>
+            mutualGrowth(x,y)
+        )
+    )
+]</pre>
+                    <p class="context">SF Context: The redemption match between Ryu and Sagat, where both warriors sought to overcome their past.</p>
+                </div>
+
+                <div class="logic-statement">
+                    <p><strong>Power of Nothingness Awakening:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    awakensNothingness(x) <span class="logical-operator implication">→</span>
+    (
+        transcendsDuality(x) <span class="logical-operator conjunction">∧</span>
+        achievesBalance(x) <span class="logical-operator conjunction">∧</span>
+        (
+            fightingIntent(x) <span class="logical-operator implication">→</span>
+            pureAction(x)
+        )
+    )
+]</pre>
+                    <p class="context">SF Context: Ryu's ultimate achievement, mastering the Power of Nothingness taught by Gouken.</p>
+                </div>
+
+                <div class="logic-statement">
+                    <p><strong>World Warrior Encounters:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    encountersWarrior(x,y) <span class="logical-operator implication">→</span>
+    (
+        studiesTechnique(x,y) <span class="logical-operator conjunction">∧</span>
+        respectsTradition(x,y) <span class="logical-operator conjunction">∧</span>
+        (
+            learnsFighting(x,y) <span class="logical-operator implication">→</span>
+            understandsCulture(x,y)
+        )
+    )
+]</pre>
+                    <p class="context">SF Context: Ryu's encounters with fighters worldwide, learning not just techniques but cultural wisdom.</p>
+                </div>
+            </div>
+
+            <div class="concept-block">
+                <h3>5.2 Ansatsuken Terminology and Deeper Meanings</h3>
+
+                <div class="terminology-section">
+                    <h4>Core Concepts and Terms:</h4>
+
+                    <div class="term-explanation">
+                        <h5>Hadou (波動) - Wave Motion</h5>
+                        <ul>
+                            <li><strong>Base Hadoken (波動拳)</strong>: The fundamental ki projection technique
+                                <ul>
+                                    <li>Requires centered spirit and proper breathing technique</li>
+                                    <li>Foundation of all advanced ki manipulation</li>
+                                    <li>Represents the practitioner's spiritual state</li>
+                                </ul>
+                            </li>
+                            <li><strong>Shakunetsu Hadoken (灼熱波動拳)</strong>: The scorching heat wave fist
+                                <ul>
+                                    <li>Infuses ki with elemental fire properties</li>
+                                    <li>Requires mastery of emotional intensity without losing control</li>
+                                    <li>Developed as a counter to Gouken's teachings about restraint</li>
+                                </ul>
+                            </li>
+                            <li><strong>Denjin Hadoken (電刃波動拳)</strong>: Electric blade surge fist
+                                <ul>
+                                    <li>Represents the pinnacle of ki manipulation</li>
+                                    <li>Combines both physical and spiritual energy</li>
+                                    <li>Only achievable in a state of complete focus</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="term-explanation">
+                        <h5>Satsui no Hadou (殺意の波動) - Surge of Murderous Intent</h5>
+                        <ul>
+                            <li><strong>Stage 1 - Chokusen Hadoken</strong>:
+                                <ul>
+                                    <li>Initial corruption of the pure Hadoken</li>
+                                    <li>Straight-line projection with killing intent</li>
+                                    <li>First sign of the dark power's influence</li>
+                                </ul>
+                            </li>
+                            <li><strong>Stage 2 - Ashura Senku</strong>:
+                                <ul>
+                                    <li>Teleport-like movement born of murderous intent</li>
+                                    <li>Transcends normal human limitations</li>
+                                    <li>Represents the abandonment of mortal constraints</li>
+                                </ul>
+                            </li>
+                            <li><strong>Stage 3 - Messatsu Gou Hadou</strong>:
+                                <ul>
+                                    <li>Supreme destructive surge</li>
+                                    <li>Channels pure killing intent into energy</li>
+                                    <li>Point of no return for most practitioners</li>
+                                </ul>
+                            </li>
+                            <li><strong>Stage 4 - Shun Goku Satsu</strong>:
+                                <ul>
+                                    <li>The Raging Demon</li>
+                                    <li>Ultimate technique that destroys the victim's soul</li>
+                                    <li>Represents complete submission to killing intent</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="term-explanation">
+                        <h5>Mu no Ken (無の拳) - Fist of Nothingness</h5>
+                        <ul>
+                            <li><strong>Mu State (無の境地)</strong>:
+                                <ul>
+                                    <li>State of no-mind, beyond thought and emotion</li>
+                                    <li>Perfect balance between action and stillness</li>
+                                    <li>Gouken's ultimate teaching</li>
+                                </ul>
+                            </li>
+                            <li><strong>Power of Nothingness</strong>:
+                                <ul>
+                                    <li>Transcendent state beyond both light and dark</li>
+                                    <li>Antithesis to the Satsui no Hadou</li>
+                                    <li>Represents true mastery of Ansatsuken</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="term-explanation">
+                        <h5>Training Methodology</h5>
+                        <ul>
+                            <li><strong>Kata (型)</strong>:
+                                <ul>
+                                    <li>Formal exercises that encode combat principles</li>
+                                    <li>Passed down from master to student</li>
+                                    <li>Contains hidden meanings within movements</li>
+                                </ul>
+                            </li>
+                            <li><strong>Ki Development (気の開発)</strong>:
+                                <ul>
+                                    <li>Systematic energy cultivation</li>
+                                    <li>Breathing techniques and meditation</li>
+                                    <li>Foundation for all advanced techniques</li>
+                                </ul>
+                            </li>
+                            <li><strong>Combat Philosophy</strong>:
+                                <ul>
+                                    <li>Balance between technique and spirit</li>
+                                    <li>Understanding of martial virtue</li>
+                                    <li>Integration of mind, body, and spirit</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="term-explanation">
+                        <h5>Philosophical Concepts</h5>
+                        <ul>
+                            <li><strong>Zanshin (残心)</strong>:
+                                <ul>
+                                    <li>Continued awareness after action</li>
+                                    <li>Mental alertness in all situations</li>
+                                    <li>Core principle of Ansatsuken defense</li>
+                                </ul>
+                            </li>
+                            <li><strong>Mushin (無心)</strong>:
+                                <ul>
+                                    <li>Mind without mind</li>
+                                    <li>Acting without conscious thought</li>
+                                    <li>Ultimate state in combat</li>
+                                </ul>
+                            </li>
+                            <li><strong>Fudoshin (不動心)</strong>:
+                                <ul>
+                                    <li>Immovable spirit</li>
+                                    <li>Emotional stability under pressure</li>
+                                    <li>Required for resisting Satsui no Hadou</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-block">
+                <h3>5.3 Advanced Techniques and Their Philosophical Foundations</h3>
+
+                <div class="technique-section">
+                    <h4>Shoryuken (昇龍拳) Evolution Path:</h4>
+
+                    <div class="technique-explanation">
+                        <h5>Base Shoryuken - Rising Dragon Fist</h5>
+                        <ul>
+                            <li><strong>Physical Principles</strong>:
+                                <ul>
+                                    <li>Converts horizontal momentum into vertical force</li>
+                                    <li>Utilizes core body rotation for power generation</li>
+                                    <li>Three-stage activation: crouch, rotation, rise</li>
+                                </ul>
+                            </li>
+                            <li><strong>Spiritual Aspects</strong>:
+                                <ul>
+                                    <li>Represents the dragon's ascension to heaven</li>
+                                    <li>Embodies the principle of overcoming earthly limitations</li>
+                                    <li>Symbolizes the practitioner's rising spirit</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="technique-explanation">
+                        <h5>Tatsumaki Senpukyaku (竜巻旋風脚)</h5>
+                        <ul>
+                            <li><strong>Technical Elements</strong>:
+                                <ul>
+                                    <li>Harnesses centripetal force for multiple strikes</li>
+                                    <li>Ki manipulation creates sustained lift</li>
+                                    <li>Requires perfect balance and ki control</li>
+                                </ul>
+                            </li>
+                            <li><strong>Philosophical Meaning</strong>:
+                                <ul>
+                                    <li>Represents the cyclical nature of existence</li>
+                                    <li>Demonstrates harmony of opposing forces</li>
+                                    <li>Embodies the principle of continuous improvement</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="technique-explanation">
+                        <h5>Denjin Renki (電刃練気) - Electric Blade Spirit Training</h5>
+                        <ul>
+                            <li><strong>Advanced Ki Manipulation</strong>:
+                                <ul>
+                                    <li>Transforms ki into electrical energy</li>
+                                    <li>Requires achieving the Mu state</li>
+                                    <li>Represents mastery over elemental forces</li>
+                                </ul>
+                            </li>
+                            <li><strong>Training Methods</strong>:
+                                <ul>
+                                    <li>Meditation under waterfalls</li>
+                                    <li>Lightning synchronization exercises</li>
+                                    <li>Internal energy circulation techniques</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="technique-explanation">
+                        <h5>Shin Techniques (真) - True Forms</h5>
+                        <ul>
+                            <li><strong>Shin Shoryuken</strong>:
+                                <ul>
+                                    <li>Perfect unification of mind, body, and spirit</li>
+                                    <li>Represents the true dragon's awakening</li>
+                                    <li>Only possible in a state of complete harmony</li>
+                                </ul>
+                            </li>
+                            <li><strong>Shin Tatsumaki</strong>:
+                                <ul>
+                                    <li>Perfect hurricane kick that transcends physical limits</li>
+                                    <li>Manifests the true nature of the tornado</li>
+                                    <li>Requires complete mastery of aerial ki control</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="technique-explanation">
+                        <h5>Forbidden Techniques (禁断技)</h5>
+                        <ul>
+                            <li><strong>Raging Demon Counters</strong>:
+                                <ul>
+                                    <li>Techniques developed to resist the Satsui no Hado</li>
+                                    <li>Requires absolute control over one's spirit</li>
+                                    <li>Based on Gouken's teachings of life-preserving arts</li>
+                                </ul>
+                            </li>
+                            <li><strong>Power Seal Methods</strong>:
+                                <ul>
+                                    <li>Ancient techniques to contain dark energy</li>
+                                    <li>Passed down through secret scrolls</li>
+                                    <li>Requires understanding of both light and darkness</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="technique-explanation">
+                        <h5>Mental Disciplines (心技)</h5>
+                        <ul>
+                            <li><strong>Kiai (気合)</strong>:
+                                <ul>
+                                    <li>Focusing of spirit through vocalization</li>
+                                    <li>Harmonizes internal and external energy</li>
+                                    <li>Strengthens technique execution</li>
+                                </ul>
+                            </li>
+                            <li><strong>Zanshin (残心)</strong>:
+                                <ul>
+                                    <li>Maintaining awareness after technique completion</li>
+                                    <li>Continuous state of readiness</li>
+                                    <li>Foundation of defensive mastery</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -1042,4 +1443,4 @@ class StreetFighterAI {
         </footer>
     </main>
 </body>
-</html>            <!-- Implementation section follows... -->            <!-- Continue with Part 3... -->            <!-- Continue with Part 2... -->
+</html>

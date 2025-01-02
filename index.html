@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Dive: Street Fighter Logic Systems</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>道場の論理: The Logic of the Dojo</h1>
+        <p class="subtitle">Formalizing Ryu's Journey from World Warrior to True Master</p>
+        <div class="philosophical-quote">
+            "The answer lies in the heart of battle." - Ryu
+        </div>
+    </header>
+
+    <!-- Fixed Symbol Legend -->
+    <div class="symbol-legend">
+        <h4>Logical Symbols</h4>
+        <ul>
+            <li><span class="logical-operator implication">→</span> Implication (If-Then)</li>
+            <li><span class="logical-operator conjunction">∧</span> Conjunction (AND)</li>
+            <li><span class="logical-operator disjunction">∨</span> Disjunction (OR)</li>
+            <li><span class="logical-operator negation">¬</span> Negation (NOT)</li>
+            <li><span class="logical-operator quantifier">∀</span> Universal Quantifier (For All)</li>
+            <li><span class="logical-operator exists">∃</span> Existential Quantifier (Exists)</li>
+            <li><span class="math-symbol">↔</span> Bi-conditional (If and Only If)</li>
+        </ul>
+    </div>
+
+    <main>
+        <section id="fundamental-concepts">
+            <h2>1. Street Fighter Core Systems in Logical Form</h2>
+
+            <div class="concept-block">
+                <h3>1.1 Character State Predicates</h3>
+                <p>In Street Fighter, character states form the foundation of decision-making:</p>
+
+                <div class="example-box predicate-statement">
+                    <h4>Core State Predicates:</h4>
+                    <div class="logic-statement">
+                        <p><strong>isGrounded(x)</strong></p>
+                        <p>Formal Definition:
+                            <span class="logical-operator quantifier">∀</span>x [
+                            Position(x).y = 0 <span class="logical-operator conjunction">∧</span>
+                            <span class="logical-operator negation">¬</span>inHitstun(x)]
+                        </p>
+                        <p class="natural-language">"A character is grounded when their Y position is 0 and they're not in hitstun."</p>
+                        <p class="context">SF Context: Determines when Ryu can perform ground normals or throws.</p>
+                    </div>
+
+                    <div class="logic-statement">
+                        <p><strong>hasChargeMeter(x)</strong></p>
+                        <p>Formal Definition:
+                            <span class="logical-operator quantifier">∀</span>x [
+                            ChargeTime(x) <span class="logical-operator negation">≥</span> RequiredTime
+                            <span class="logical-operator conjunction">∧</span>
+                            Direction(x) = Backward]
+                        </p>
+                        <p class="natural-language">"A character has charge when they've held back for the required time."</p>
+                        <p class="context">SF Context: Used for special moves like Guile's Sonic Boom.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-block">
+                <h3>1.2 Ansatsuken Core Principles</h3>
+                <div class="logic-statement">
+                    <p><strong>Satsui no Hado Control:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    hasSatsui(x) <span class="logical-operator implication">→</span>
+    (
+        increasedPower(x) <span class="logical-operator conjunction">∧</span>
+        <span class="logical-operator negation">¬</span>hasMuDo(x) <span class="logical-operator conjunction">∧</span>
+        shouldSuppressUrge(x)
+    )
+]</pre>
+                    <p class="context">SF Context: Ryu's constant battle against the dark hadou.</p>
+                </div>
+            </div>
+
+            <div class="concept-block">
+                <h3>1.2 Street Fighter Specific Move Properties</h3>
+                <div class="move-properties">
+                    <h4>Move Classification Logic:</h4>
+                    <div class="logic-statement">
+                        <p><strong>isReversalMove(m)</strong></p>
+                        <pre>
+<span class="logical-operator quantifier">∀</span>m [
+    isReversalMove(m) <span class="math-symbol">↔</span>
+    (hasInvincibility(m) <span class="logical-operator conjunction">∧</span>
+     startupFrames(m) <span class="logical-operator negation">≤</span> 5 <span class="logical-operator conjunction">∧</span>
+     meterCost(m) <span class="logical-operator negation">></span> 0)
+]</pre>
+                        <p class="natural-language">"A move is a reversal if it has invincibility, fast startup, and costs meter."</p>
+                        <p class="context">SF Context: Dragon Punch (DP) with meter is a reversal.</p>
+                    </div>
+
+                    <div class="logic-statement">
+                        <p><strong>isAntiAir(m)</strong></p>
+                        <pre>
+<span class="logical-operator quantifier">∀</span>m [
+    isAntiAir(m) <span class="math-symbol">↔</span>
+    (hitboxHeight(m) <span class="logical-operator negation">></span> characterHeight <span class="logical-operator conjunction">∧</span>
+     upperBodyInvuln(m) <span class="logical-operator conjunction">∧</span>
+     startupFrames(m) <span class="logical-operator negation">≤</span> 7)
+]</pre>
+                        <p class="natural-language">"A move is an anti-air if it has upward hitboxes, upper body invulnerability, and quick startup."</p>
+                        <p class="context">SF Context: Ryu's Standing Heavy Punch or DP.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-block"></div>
+                <h3>1.3 Street Fighter Combo Systems</h3>
+                <div class="combo-logic">
+                    <h4>Combo Validation Logic:</h4>
+                    <div class="logic-statement">
+                        <p><strong>isValidCombo(m1, m2)</strong></p>
+                        <pre>
+<span class="logical-operator quantifier">∀</span>m1,m2 [
+    isValidCombo(m1,m2) <span class="math-symbol">↔</span>
+    (hitstun(m1) <span class="logical-operator negation">></span> startupFrames(m2) <span class="logical-operator conjunction">∧</span>
+     pushbackDistance(m1) <span class="logical-operator negation">≤</span> range(m2) <span class="logical-operator conjunction">∧</span>
+     cancelWindow(m1) <span class="logical-operator conjunction">∧</span>
+     canCancelInto(m1,m2))
+]</pre>
+                        <p class="natural-language">"A combo is valid if the second move can start before hitstun ends, is in range, and can be canceled into."</p>
+                        <p class="context">SF Context: Ryu's cr.MK into Hadoken combo.</p>
+                    </div>
+
+                    <h4>Target Combo Logic:</h4>
+                    <div class="logic-statement">
+                        <pre>
+<span class="logical-operator quantifier">∀</span>x,m1,m2 [
+    (performsMove(x,m1) <span class="logical-operator conjunction">∧</span>
+     isTargetCombo(m1,m2) <span class="logical-operator conjunction">∧</span>
+     inputWindow(m2) <span class="logical-operator negation"><</span> 6)
+    <span class="logical-operator implication">→</span>
+    shouldBuffer(x,m2)
+]</pre>
+                        <p class="context">SF Context: Buffering Ken's b.MP into HP target combo.</p>
+                    </div>
+                </div>
+
+                <div class="frame-trap-logic">
+                    <h4>Frame Trap Decision Making:</h4>
+                    <div class="logic-statement">
+                        <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (opponentTechPattern(y, "aggressive") <span class="logical-operator conjunction">∧</span>
+     hasFrameAdvantage(x) <span class="logical-operator conjunction">∧</span>
+     distance(x,y) <span class="logical-operator negation">≤</span> throwRange)
+    <span class="logical-operator implication">→</span>
+    (shouldDelayButton(x) <span class="logical-operator disjunction">∨</span> shouldThrow(x))
+]</pre>
+                        <p class="natural-language">"Against aggressive opponents, alternate between delayed buttons and throws when at advantage."</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-block">
+                <h3>2.1 Okizeme Decision Trees</h3>
+                <div class="oki-logic">
+                    <h4>Wakeup Pressure System:</h4>
+                    <div class="logic-statement">
+                        <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    isKnockedDown(y) <span class="logical-operator implication">→</span>
+    (
+        (hasQuickRise(y) <span class="logical-operator implication">→</span> setOkiTiming(x, 11)) <span class="logical-operator conjunction">∧</span>
+        (hasBackRoll(y) <span class="logical-operator implication">→</span> setOkiTiming(x, 15)) <span class="logical-operator conjunction">∧</span>
+        (hasVReversal(y) <span class="logical-operator implication">→</span> shouldBait(x))
+    )
+]</pre>
+                        <p class="natural-language">"On knockdown, adjust timing for quick rise or back roll, and bait V-Reversal if available."</p>
+                    </div>
+
+                    <h4>Safe Jump Logic:</h4>
+                    <div class="logic-statement">
+                        <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (canSafeJump(x,y) <span class="logical-operator conjunction">∧</span>
+     hasMeterForReversal(y))
+    <span class="logical-operator implication">→</span>
+    performSafeJump(x)
+]</pre>
+                        <p class="context">SF Context: Safe jump timing against DP reversals.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-block">
+                <h3>2.2 V-System Resource Management</h3>
+                <div class="v-system-logic">
+                    <h4>V-Trigger Decision Making:</h4>
+                    <div class="logic-statement">
+                        <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    shouldActivateVTrigger(x) <span class="math-symbol">↔</span>
+    (
+        (health(x) <span class="logical-operator negation"><</span> 40% <span class="logical-operator conjunction">∧</span>
+         hasVTrigger(x) <span class="logical-operator conjunction">∧</span>
+         <span class="logical-operator negation">¬</span>isInHitstun(x))
+        <span class="logical-operator disjunction">∨</span>
+        (canConfirmInto(x, "highDamageCombo") <span class="logical-operator conjunction">∧</span>
+         hasVTrigger(x))
+    )
+]</pre>
+                        <p class="natural-language">"Activate V-Trigger when at low health or to confirm into high damage."</p>
+                    </div>
+
+                    <h4>V-Reversal Usage:</h4>
+                    <div class="logic-statement">
+                        <pre>
+<span class="logical-operator quantifier">∀</span>x,y,m [
+    shouldVReversal(x) <span class="math-symbol">↔</span>
+    (
+        isBlocking(x) <span class="logical-operator conjunction">∧</span>
+        hasVGauge(x) <span class="logical-operator conjunction">∧</span>
+        (
+            (pressure(y) <span class="logical-operator negation">></span> threshold <span class="logical-operator conjunction">∧</span>
+             health(x) <span class="logical-operator negation"><</span> 30%)
+            <span class="logical-operator disjunction">∨</span>
+            isSetupMove(lastMove(y))
+        )
+    )
+]</pre>
+                        <p class="context">SF Context: V-Reversal against heavy pressure or setup moves.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-block"></div>
+                <h3>3.1 Matchup-Specific Adaptations</h3>
+                <div class="matchup-logic">
+                    <h4>Character Archetype Responses:</h4>
+                    <div class="logic-statement">
+                        <p><strong>Zoner Matchup Logic:</strong></p>
+                        <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    isZoner(y) <span class="logical-operator implication">→</span>
+    (
+        (projectileOnScreen(y) <span class="logical-operator implication">→</span>
+            (shouldNeutralJump(x) <span class="logical-operator disjunction">∨</span> shouldEX(x))) <span class="logical-operator conjunction">∧</span>
+        (distance(x,y) <span class="logical-operator negation"><</span> rushdownRange <span class="logical-operator implication">→</span>
+            maintainPressure(x))
+    )
+]</pre>
+                        <p class="context">SF Context: Ryu vs Guile matchup strategies.</p>
+                    </div>
+
+                    <div class="logic-statement">
+                        <p><strong>Grappler Counter-Strategy:</strong></p>
+                        <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    isGrappler(y) <span class="logical-operator implication">→</span>
+    (
+        (distance(x,y) = throwRange <span class="logical-operator implication">→</span>
+            shouldPreemptiveButton(x)) <span class="logical-operator conjunction">∧</span>
+        (hasCommandGrab(y) <span class="logical-operator implication">→</span>
+            maintainDistance(x, "mid"))
+    )
+]</pre>
+                        <p class="context">SF Context: Keeping Zangief out with Ryu's cr.MK.</p>
+                    </div>
+                </div>
+
+                <div class="archetype-responses">
+                    <h4>Specific Character Counters:</h4>
+                    <div class="logic-statement">
+                        <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (character(y) = "Dhalsim" <span class="logical-operator conjunction">∧</span>
+     limb(y, "extended"))
+    <span class="logical-operator implication">→</span>
+    (shouldTatsu(x) <span class="logical-operator disjunction">∨</span> shouldEXFireball(x))
+]</pre>
+                        <p class="natural-language">"Against Dhalsim's extended limbs, use Tatsumaki or EX Fireball to punish."</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-block">
+                <h3>3.2 Situational Awareness Systems</h3>
+                <div class="situation-logic">
+                    <h4>Corner Control:</h4>
+                    <div class="logic-statement">
+                        <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (hasCornerPressure(x,y) <span class="logical-operator conjunction">∧</span>
+     opponentTendency(y, "reversal"))
+    <span class="logical-operator implication">→</span>
+    (
+        shouldShimmy(x) <span class="logical-operator disjunction">∨</span>
+        (blockString(x) <span class="logical-operator conjunction">∧</span>
+         waitForReversal(x))
+    )
+]</pre>
+                        <p class="context">SF Context: Baiting and punishing desperate DPs in corner.</p>
+                    </div>
+
+                    <h4>Stage Position Awareness:</h4>
+                    <div class="logic-statement">
+                        <pre>
+<span class="logical-operator quantifier">∀</span>x,y,p [
+    stagePosition(p) <span class="logical-operator conjunction">∧</span>
+    (
+        (p = "corner" <span class="logical-operator implication">→</span> increasePressure(x)) <span class="logical-operator conjunction">∧</span>
+        (p = "midscreen" <span class="logical-operator implication">→</span> maintainNeutral(x)) <span class="logical-operator conjunction">∧</span>
+        (p = "backToCorner" <span class="logical-operator implication">→</span> shouldEscape(x))
+    )
+]</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-block">
+                <h3>3.3 Advanced Pattern Recognition</h3>
+                <div class="pattern-recognition">
+                    <h4>Player Habit Analysis:</h4>
+                    <div class="logic-statement">
+                        <pre>
+<span class="logical-operator quantifier">∀</span>x,y,s [
+    (situation(s) <span class="logical-operator conjunction">∧</span>
+     observedResponse(y,s) <span class="logical-operator negation">></span> 3)
+    <span class="logical-operator implication">→</span>
+    (
+        addToPatternDB(y,s) <span class="logical-operator conjunction">∧</span>
+        calculateCounter(x,s)
+    )
+]</pre>
+                        <p class="natural-language">"After observing an opponent's response to a situation multiple times, add it to the pattern database and calculate counters."</p>
+                    </div>
+
+                    <h4>Adaptation Triggers:</h4>
+                    <div class="logic-statement">
+                        <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (successfulCounter(y,x) <span class="logical-operator negation">></span> 2)
+    <span class="logical-operator implication">→</span>
+    (
+        shouldChangePattern(x) <span class="logical-operator conjunction">∧</span>
+        updateStrategy(x, getAlternateStrategy())
+    )
+]</pre>
+                        <p class="context">SF Context: Adapting when opponent has downloaded your patterns.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-block">
+                <h3>3.4 Meta-Game Considerations</h3>
+                <div class="meta-logic">
+                    <h4>Round-Based Adaptations:</h4>
+                    <div class="logic-statement">
+                        <pre>
+<span class="logical-operator quantifier">∀</span>x,r [
+    (roundNumber(r) <span class="logical-operator negation">></span> 1)
+    <span class="logical-operator implication">→</span>
+    (
+        analyzePreviousRound(r-1) <span class="logical-operator conjunction">∧</span>
+        (
+            (lostPreviousRound(x) <span class="logical-operator implication">→</span>
+                changeGameplan(x, "aggressive")) <span class="logical-operator disjunction">∨</span>
+            (wonPreviousRound(x) <span class="logical-operator implication">→</span>
+                maintainGameplan(x))
+        )
+    )
+]</pre>
+                        <p class="natural-language">"Adapt strategy based on previous round results."</p>
+                    </div>
+
+                    <h4>Tournament Context:</h4>
+                    <div class="logic-statement">
+                        <pre>
+<span class="logical-operator quantifier">∀</span>x,m [
+    isTournamentMatch(m) <span class="logical-operator implication">→</span>
+    (
+        (matchPoint(x) <span class="logical-operator implication">→</span>
+            playConservative(x)) <span class="logical-operator conjunction">∧</span>
+        (eliminationGame(m) <span class="logical-operator implication">→</span>
+            minimizeRisks(x))
+    )
+]</pre>
+                        <p class="context">SF Context: Adjusting playstyle based on tournament situation.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-block"></div>
+                <h3>4.1 Implementation Architecture</h3>
+                <div class="implementation-logic">
+                    <h4>Decision Tree Structure:</h4>
+                    <pre class="code-block">
+class StreetFighterNode {
+    condition: Predicate
+    weight: float
+    priority: number
+    actions: Action[]
+    children: StreetFighterNode[]
+    frameData: FrameData
+
+    evaluate(): Action {
+        if (this.condition.test()) {
+            return this.getBestAction()
+        }
+        return this.defaultAction
+    }
+
+    getBestAction(): Action {
+        return this.actions
+            .filter(a => this.isViable(a))
+            .sort((a, b) => this.calculateUtility(b) - this.calculateUtility(a))[0]
+    }
+
+    calculateUtility(action: Action): number {
+        return action.damage * action.successRate * this.weight
+            + (action.frameAdvantage > 0 ? 1.5 : 1.0)
+            - (action.meterCost * 0.8)
+    }
+}
+</pre>
+                    <p class="implementation-notes">Each node in the decision tree evaluates frame-perfect conditions and calculates optimal responses.</p>
+                </div>
+
+                <div class="frame-perfect-system">
+                    <h4>Frame-Perfect Execution System:</h4>
+                    <pre class="code-block">
+class FrameManager {
+    currentFrame: number
+    inputBuffer: Input[]
+    frameData: Map<string, FrameData>
+
+    update(gameState: GameState) {
+        this.currentFrame++
+        this.processInputBuffer()
+        this.checkFrameAdvantage()
+        this.updateHitConfirms()
+    }
+
+    isInStartup(move: Move): boolean {
+        return this.currentFrame - move.startFrame < this.frameData.get(move.id).startup
+    }
+
+    isInRecovery(move: Move): boolean {
+        return this.currentFrame - move.startFrame < this.frameData.get(move.id).recovery
+    }
+}
+</pre>
+                </div>
+            </div>
+
+            <div class="concept-block">
+                <h3>4.2 Real-Time Pattern Recognition</h3>
+                <div class="pattern-implementation">
+                    <h4>Pattern Tracking System:</h4>
+                    <pre class="code-block">
+class PatternTracker {
+    patterns: Map<string, Pattern>
+    frequency: Map<string, number>
+    counters: Map<string, Action[]>
+
+    recordPattern(situation: GameState, response: Action) {
+        const pattern = this.createPattern(situation, response)
+        this.updateFrequency(pattern)
+        this.updateCounters(pattern)
+    }
+
+    suggestCounter(pattern: Pattern): Action {
+        return this.counters.get(pattern.id)
+            .sort((a, b) => this.getSuccessRate(b) - this.getSuccessRate(a))[0]
+    }
+}
+</pre>
+                    <p class="implementation-notes">Real-time pattern recognition system that adapts to opponent tendencies.</p>
+                </div>
+            </div>
+
+            <div class="concept-block">
+                <h3>4.3 State Machine Implementation</h3>
+                <div class="state-machine">
+                    <h4>Character State Management:</h4>
+                    <pre class="code-block">
+class FighterStateMachine {
+    currentState: FighterState
+    transitions: Map<string, StateTransition>
+    frameData: FrameData
+
+    update(input: Input, gameState: GameState) {
+        const nextState = this.getNextState(input, gameState)
+        if (this.canTransition(this.currentState, nextState)) {
+            this.executeTransition(nextState)
+        }
+    }
+
+    canTransition(from: FighterState, to: FighterState): boolean {
+        return this.transitions.has(`${from.id}->${to.id}`)
+            && this.checkTransitionConditions(from, to)
+    }
+}
+</pre>
+                    <p class="implementation-notes">State machine handling character states and transitions.</p>
+                </div>
+            </div>
+
+            <div class="concept-block">
+                <h3>4.4 Performance Optimization</h3>
+                <div class="optimization">
+                    <h4>Critical Performance Considerations:</h4>
+                    <ul class="optimization-list">
+                        <li>
+                            <strong>Frame Budget Management:</strong>
+                            <pre class="code-block">
+const FRAME_BUDGET_MS = 16.67  // 60fps target
+const MAX_PREDICTION_DEPTH = 3  // Limit prediction tree depth
+const CACHE_DURATION_FRAMES = 6 // Cache predictions for 6 frames</pre>
+                        </li>
+                        <li>
+                            <strong>Decision Caching:</strong>
+                            <pre class="code-block">
+class DecisionCache {
+    cache: Map<string, CachedDecision>
+
+    getCachedDecision(state: GameState): Decision | null {
+        const key = this.getStateHash(state)
+        const cached = this.cache.get(key)
+        if (cached && !this.isStale(cached)) {
+            return cached.decision
+        }
+        return null
+    }
+}</pre>
+                        </li>
+                        <li>
+                            <strong>Priority Queue for Decisions:</strong>
+                            <pre class="code-block">
+class DecisionPriorityQueue {
+    queue: PriorityQueue<Decision>
+
+    addDecision(decision: Decision) {
+        const priority = this.calculatePriority(decision)
+        this.queue.enqueue(decision, priority)
+    }
+
+    getNextDecision(): Decision {
+        return this.queue.dequeue()
+    }
+}</pre>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="concept-block">
+                <h3>4.5 System Integration</h3>
+                <div class="integration">
+                    <h4>Main Game Loop Integration:</h4>
+                    <pre class="code-block">
+class StreetFighterAI {
+    decisionTree: StreetFighterNode
+    frameManager: FrameManager
+    patternTracker: PatternTracker
+    stateMachine: FighterStateMachine
+    cache: DecisionCache
+
+    update(gameState: GameState) {
+        // Update all systems
+        this.frameManager.update(gameState)
+        this.stateMachine.update(gameState)
+        this.patternTracker.update(gameState)
+
+        // Get optimal action
+        const action = this.getOptimalAction(gameState)
+
+        // Execute action
+        this.executeAction(action)
+    }
+
+    getOptimalAction(gameState: GameState): Action {
+        // Check cache first
+        const cached = this.cache.getCachedDecision(gameState)
+        if (cached) return cached
+
+        // Calculate new optimal action
+        const action = this.decisionTree.evaluate()
+
+        // Cache result
+        this.cache.cacheDecision(gameState, action)
+
+        return action
+    }
+}
+</pre>
+                </div>
+            </div>
+
+            <div class="logic-statement">
+                <p><strong>Denjin Enhancement:</strong></p>
+                <pre>
+<span class="logical-operator quantifier">∀</span>m [
+    isDenjinCharged(m) <span class="logical-operator implication">→</span>
+    (
+        frameAdvantage(m) += 2 <span class="logical-operator conjunction">∧</span>
+        damage(m) *= 1.5 <span class="logical-operator conjunction">∧</span>
+        hasStunProperty(m)
+    )
+]</pre>
+                <p class="context">SF Context: Ryu's mastery of the electrical properties of Hadou.</p>
+            </div>
+
+            <div class="logic-statement">
+                <p><strong>Mu no Ken (Fist of Nothingness):</strong></p>
+                <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    hasMuState(x) <span class="logical-operator implication">→</span>
+    (
+        perfectParryRate(x) *= 1.5 <span class="logical-operator conjunction">∧</span>
+        counterHitDamage(x) *= 1.25 <span class="logical-operator conjunction">∧</span>
+        <span class="logical-operator negation">¬</span>canUseSatsui(x)
+    )
+]</pre>
+                <p class="context">SF Context: Ryu's ultimate state of consciousness, transcending the Satsui no Hado.</p>
+            </div>
+
+            <div class="concept-block">
+                <h3>1.3 The Path of the True Warrior</h3>
+                <div class="logic-statement">
+                    <p><strong>Gouken's Teachings:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    isGoukenStudent(x) <span class="logical-operator implication">→</span>
+    (
+        useHadouForDefense(x) <span class="logical-operator conjunction">∧</span>
+        <span class="logical-operator negation">¬</span>seekDestructivePower(x) <span class="logical-operator conjunction">∧</span>
+        (training(x) <span class="logical-operator implication">→</span> spiritualGrowth(x))
+    )
+]</pre>
+                    <p class="context">SF Context: The foundational principles taught by Master Gouken.</p>
+                </div>
+
+                <div class="logic-statement">
+                    <p><strong>Ken Masters Rivalry:</strong></p>
+                    <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isKen(y)) <span class="logical-operator implication">→</span>
+    (
+        pushesEachOtherForward(x,y) <span class="logical-operator conjunction">∧</span>
+        sharedTechniques(x,y) <span class="logical-operator conjunction">∧</span>
+        distinctStyles(x,y)
+    )
+]</pre>
+                    <p class="context">SF Context: The eternal rivalry that drives both warriors to greater heights.</p>
+                </div>
+            </div>
+
+            <div class="logic-statement">
+                <p><strong>Shoryuken Evolution:</strong></p>
+                <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    mastersShinShoryuken(x) <span class="logical-operator implication">→</span>
+    (
+        damage(shoryuken) *= 2 <span class="logical-operator conjunction">∧</span>
+        addProperty(shoryuken, "airborne_invincible") <span class="logical-operator conjunction">∧</span>
+        requiresMomentOfMu(x)
+    )
+]</pre>
+                <p class="context">SF Context: The pinnacle of Ryu's dragon punch mastery.</p>
+            </div>
+
+            <div class="logic-statement">
+                <p><strong>Akuma Encounter Protocol:</strong></p>
+                <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isAkuma(y)) <span class="logical-operator implication">→</span>
+    (
+        detectKillingIntent(y) <span class="logical-operator conjunction">∧</span>
+        (satsuitemptation(x) *= 3) <span class="logical-operator conjunction">∧</span>
+        (
+            hasMuState(x) <span class="logical-operator implication">→</span>
+            canResistRage(x)
+        )
+    )
+]</pre>
+                <p class="context">SF Context: The ultimate test of Ryu's control over the dark hadou.</p>
+            </div>
+
+            <div class="logic-statement">
+                <p><strong>World Warrior Journey:</strong></p>
+                <pre>
+<span class="logical-operator quantifier">∀</span>x,t [
+    isWorldWarrior(x) <span class="logical-operator implication">→</span>
+    (
+        (encounterNewStyle(x,t) <span class="logical-operator implication">→</span>
+            expandTechnique(x,t)) <span class="logical-operator conjunction">∧</span>
+        (faceAdversity(x) <span class="logical-operator implication">→</span>
+            growStronger(x)) <span class="logical-operator conjunction">∧</span>
+        seeksTrueMeaning(x)
+    )
+]</pre>
+                <p class="context">SF Context: Ryu's never-ending journey of self-improvement.</p>
+            </div>
+
+            <div class="logic-statement">
+                <p><strong>The Answer in Battle:</strong></p>
+                <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    seeksTrueMeaning(x) <span class="logical-operator implication">→</span>
+    (
+        (fightWithHonor(x) <span class="logical-operator conjunction">∧</span>
+         respectOpponent(x)) <span class="logical-operator implication">→</span>
+        (
+            gainInsight(x) <span class="logical-operator conjunction">∧</span>
+            approachEnlightenment(x)
+        )
+    )
+]</pre>
+                <p class="context">SF Context: Ryu's philosophy that true growth comes through honorable combat.</p>
+            </div>
+
+        </section>
+
+        <footer>
+            <p>© 2025 Advanced Street Fighter Logic Systems</p>
+            <p>A comprehensive guide to implementing intelligent fighting game AI through formal logic</p>
+        </footer>
+    </main>
+</body>
+</html>            <!-- Implementation section follows... -->            <!-- Continue with Part 3... -->            <!-- Continue with Part 2... -->

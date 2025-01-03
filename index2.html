@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ryu: A Logical Construction</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .collapsible {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .active, .collapsible:hover {
+            background-color: #ccc;
+        }
+
+        .collapsible:after {
+            content: '\002B';
+            color: #777;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+
+        .active:after {
+            content: "\2212";
+        }
+
+        .content {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            background-color: #f1f1f1;
+        }
+
+        @media (max-width: 768px) {
+            .logic-statement pre {
+                font-size: 14px;
+                overflow-x: auto;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
+
+            .term-explanation {
+                padding: 10px;
+            }
+
+            .technique-section {
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logic-statement pre {
+                font-size: 12px;
+            }
+
+            .executive-summary {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="legend-modal" class="modal">
+        <div class="modal-header">
+            <h3>Logical Notation Legend</h3>
+            <div class="modal-controls">
+                <button id="collapse-legend">-</button>
+                <button id="close-legend">×</button>
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="legend-section">
+                <table>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Name</th>
+                        <th>Meaning</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td><span class="logical-operator conjunction">∧</span></td>
+                        <td>Conjunction</td>
+                        <td>"AND"</td>
+                        <td>A <span class="logical-operator conjunction">∧</span> B - "A and B"</td>
+                    </tr>
+                    <tr>
+                        <td><span class="logical-operator disjunction">∨</span></td>
+                        <td>Disjunction</td>
+                        <td>"OR"</td>
+                        <td>A <span class="logical-operator disjunction">∨</span> B - "A or B"</td>
+                    </tr>
+                    <tr>
+                        <td><span class="logical-operator negation">¬</span></td>
+                        <td>Negation</td>
+                        <td>"NOT"</td>
+                        <td><span class="logical-operator negation">¬</span>A - "not A"</td>
+                    </tr>
+                    <tr>
+                        <td><span class="logical-operator implication">→</span></td>
+                        <td>Implication</td>
+                        <td>"If...then"</td>
+                        <td>A <span class="logical-operator implication">→</span> B - "if A then B"</td>
+                    </tr>
+                    <tr>
+                        <td><span class="logical-operator biconditional">↔</span></td>
+                        <td>Biconditional</td>
+                        <td>"If and only if"</td>
+                        <td>A <span class="logical-operator biconditional">↔</span> B - "A if and only if B"</td>
+                    </tr>
+                    <tr>
+                        <td><span class="logical-operator quantifier">∀</span></td>
+                        <td>Universal Quantifier</td>
+                        <td>"For all"</td>
+                        <td><span class="logical-operator quantifier">∀</span>x P(x) - "for all x, P(x)"</td>
+                    </tr>
+                    <tr>
+                        <td><span class="logical-operator quantifier">∃</span></td>
+                        <td>Existential Quantifier</td>
+                        <td>"There exists"</td>
+                        <td><span class="logical-operator quantifier">∃</span>x P(x) - "there exists x"</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <button id="show-legend" class="show-legend-btn">Show Legend</button>
+
+    <style>
+        .modal {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            width: 500px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            cursor: move;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .modal-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .modal-controls button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #666;
+            transition: all 0.2s ease;
+        }
+
+        .modal-controls button:hover {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .modal-content {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: calc(90vh - 60px);
+        }
+
+        .legend-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .legend-section th, .legend-section td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            line-height: 1.4;
+        }
+
+        .legend-section th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .legend-section td {
+            color: #444;
+        }
+
+        .legend-section td:first-child {
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .logical-operator {
+            font-weight: bold;
+            color: #2962ff;
+        }
+
+        .logical-operator.conjunction { color: #2962ff; }
+        .logical-operator.disjunction { color: #00c853; }
+        .logical-operator.negation { color: #d50000; }
+        .logical-operator.implication { color: #6200ea; }
+        .logical-operator.biconditional { color: #304ffe; }
+        .logical-operator.quantifier { color: #2962ff; }
+
+        @media (max-width: 768px) {
+            .modal {
+                width: 95vw;
+                right: 2.5vw;
+                top: 10px;
+            }
+
+            .legend-section table {
+                font-size: 14px;
+            }
+
+            .legend-section th, .legend-section td {
+                padding: 10px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .legend-section table {
+                font-size: 13px;
+            }
+
+            .legend-section th, .legend-section td {
+                padding: 8px 10px;
+            }
+
+            .modal-header {
+                padding: 12px 15px;
+            }
+
+            .modal-content {
+                padding: 15px;
+            }
+        }
+
+        .modal.collapsed .modal-content {
+            display: none;
+        }
+
+        .show-legend-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: all 0.2s ease;
+        }
+
+        .show-legend-btn:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+    </style>
+
+    <script>
+        // Make the modal draggable
+        const modal = document.getElementById('legend-modal');
+        const modalHeader = modal.querySelector('.modal-header');
+        const showLegendBtn = document.getElementById('show-legend');
+        const collapseLegendBtn = document.getElementById('collapse-legend');
+        const closeLegendBtn = document.getElementById('close-legend');
+
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        modalHeader.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+
+            if (e.target === modalHeader) {
+                isDragging = true;
+            }
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+
+                xOffset = currentX;
+                yOffset = currentY;
+
+                setTranslate(currentX, currentY, modal);
+            }
+        }
+
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+        }
+
+        function setTranslate(xPos, yPos, el) {
+            el.style.transform = `translate(${xPos}px, ${yPos}px)`;
+        }
+
+        // Collapse/Expand functionality
+        collapseLegendBtn.addEventListener('click', () => {
+            modal.classList.toggle('collapsed');
+            collapseLegendBtn.textContent = modal.classList.contains('collapsed') ? '+' : '-';
+        });
+
+        // Hide/Show functionality
+        closeLegendBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+            showLegendBtn.style.display = 'block';
+        });
+
+        showLegendBtn.addEventListener('click', () => {
+            modal.style.display = 'block';
+            modal.classList.remove('collapsed'); // Ensure modal is expanded when shown
+            collapseLegendBtn.textContent = '-'; // Reset collapse button state
+            showLegendBtn.style.display = 'none';
+        });
+
+        // Touch events for mobile
+        modalHeader.addEventListener('touchstart', dragStart, false);
+        document.addEventListener('touchmove', drag, false);
+        document.addEventListener('touchend', dragEnd, false);
+    </script>
+
+    <header>
+        <h1>龍の論理: The Logic of Ryu</h1>
+        <p class="subtitle">A Systematic Construction of the Wandering Warrior</p>
+        <div class="philosophical-quote">
+            "The more I learn, the more I realize I know nothing." - Ryu
+        </div>
+    </header>
+
+    <div class="executive-summary">
+        <h2>Executive Summary</h2>
+        <p>This document presents a formal logical construction of Ryu's character from Street Fighter using predicate and propositional logic. Starting from basic axioms about his existence and progressing through increasingly complex theorems, we systematically build a complete logical framework that describes:</p>
+        <ul>
+            <li>Core character traits and motivations</li>
+            <li>Technical progression and martial arts development</li>
+            <li>Key relationships and their influence on character growth</li>
+            <li>Philosophical evolution and internal struggles</li>
+            <li>Ki manipulation and energy techniques</li>
+        </ul>
+        <p>Each statement builds upon previous ones, creating a rigorous logical system that captures both the technical and spiritual aspects of the character.</p>
+    </div>
+
+    <button class="collapsible">Logical Notation Legend</button>
+    <div class="content">
+        <div class="legend-section">
+            <h3>Propositional Logic Operators</h3>
+            <table>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Name</th>
+                    <th>Meaning</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><span class="logical-operator conjunction">∧</span></td>
+                    <td>Conjunction</td>
+                    <td>"AND"</td>
+                    <td>A <span class="logical-operator conjunction">∧</span> B - "A and B"</td>
+                </tr>
+                <tr>
+                    <td><span class="logical-operator disjunction">∨</span></td>
+                    <td>Disjunction</td>
+                    <td>"OR"</td>
+                    <td>A <span class="logical-operator disjunction">∨</span> B - "A or B"</td>
+                </tr>
+                <tr>
+                    <td><span class="logical-operator negation">¬</span></td>
+                    <td>Negation</td>
+                    <td>"NOT"</td>
+                    <td><span class="logical-operator negation">¬</span>A - "not A"</td>
+                </tr>
+                <tr>
+                    <td><span class="logical-operator implication">→</span></td>
+                    <td>Implication</td>
+                    <td>"If...then"</td>
+                    <td>A <span class="logical-operator implication">→</span> B - "if A then B"</td>
+                </tr>
+                <tr>
+                    <td><span class="logical-operator biconditional">↔</span></td>
+                    <td>Biconditional</td>
+                    <td>"If and only if"</td>
+                    <td>A <span class="logical-operator biconditional">↔</span> B - "A if and only if B"</td>
+                </tr>
+                <tr>
+                    <td><span class="logical-operator quantifier">∀</span></td>
+                    <td>Universal Quantifier</td>
+                    <td>"For all"</td>
+                    <td><span class="logical-operator quantifier">∀</span>x P(x) - "for all x, P(x)"</td>
+                </tr>
+                <tr>
+                    <td><span class="logical-operator quantifier">∃</span></td>
+                    <td>Existential Quantifier</td>
+                    <td>"There exists"</td>
+                    <td><span class="logical-operator quantifier">∃</span>x P(x) - "there exists x"</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <style>
+        .legend-section {
+            margin: 20px 0;
+        }
+
+        .legend-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        .legend-section th, .legend-section td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .legend-section th {
+            background-color: #f5f5f5;
+        }
+
+        .executive-summary {
+            background-color: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border-left: 5px solid #007bff;
+        }
+
+        .executive-summary ul {
+            margin-left: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .legend-section table {
+                font-size: 14px;
+            }
+
+            .legend-section td, .legend-section th {
+                padding: 5px;
+            }
+        }
+    </style>
+
+    <!-- Keep existing symbol legend -->
+
+    <div class="concept-block">
+        <h3>1.0 Foundational Axioms</h3>
+
+        <div class="logic-statement">
+            <p><strong>Axiom 1: Basic Existence</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∃</span>x [
+    isRyu(x) <span class="logical-operator conjunction">∧</span>
+    isFighter(x)
+]</pre>
+            <p class="natural-language">"There exists an entity that is Ryu and is a fighter."</p>
+            <p class="context">SF Lore: The foundation of Ryu's existence as the archetypal fighting game character, introduced in the first Street Fighter.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Axiom 2: Orphan Origins</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    isRyu(x) <span class="logical-operator implication">→</span>
+    (
+        <span class="logical-operator negation">¬</span>hasParents(x) <span class="logical-operator conjunction">∧</span>
+        foundByGouken(x)
+    )
+]</pre>
+            <p class="natural-language">"If an entity is Ryu, then they have no parents and were found by Gouken."</p>
+            <p class="context">SF Lore: Ryu's origin as an orphan taken in by Master Gouken shaped his singular focus on martial arts.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Axiom 3: Training Foundation</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    isRyu(x) <span class="logical-operator implication">→</span>
+    (
+        trainsAnsatsuken(x) <span class="logical-operator conjunction">∧</span>
+        hasGoukenMaster(x) <span class="logical-operator conjunction">∧</span>
+        dedicatedToArt(x)
+    )
+]</pre>
+            <p class="natural-language">"If an entity is Ryu, then they train in Ansatsuken under Gouken with complete dedication."</p>
+            <p class="context">SF Lore: The foundation of Ryu's journey begins with his training under Gouken in the modified Ansatsuken style.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Axiom 4: Core Techniques</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    isRyu(x) <span class="logical-operator implication">→</span>
+    (
+        hasHadoken(x) <span class="logical-operator conjunction">∧</span>
+        hasShoryuken(x) <span class="logical-operator conjunction">∧</span>
+        hasTatsumaki(x)
+    )
+]</pre>
+            <p class="natural-language">"If an entity is Ryu, then they possess the three core techniques of Ansatsuken."</p>
+            <p class="context">SF Lore: These three techniques form the foundation of Gouken's teaching and Ryu's fighting style.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Axiom 5: Inner Struggle</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,t [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isTime(t)) <span class="logical-operator implication">→</span>
+    (
+        hasSatsui(x,t) <span class="logical-operator conjunction">∧</span>
+        resistsSatsui(x,t)
+    )
+]</pre>
+            <p class="natural-language">"At all times, if an entity is Ryu, then they possess but resist the Satsui no Hado."</p>
+            <p class="context">SF Lore: The constant battle against the dark hadou defines much of Ryu's character journey.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Axiom 6: Wandering Warrior</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,l [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isLocation(l)) <span class="logical-operator implication">→</span>
+    (
+        <span class="logical-operator negation">¬</span>hasHome(x,l) <span class="logical-operator conjunction">∧</span>
+        seeksGrowth(x,l)
+    )
+]</pre>
+            <p class="natural-language">"For any location, if an entity is Ryu, then they have no permanent home there and seek growth through travel."</p>
+            <p class="context">SF Lore: Ryu's constant worldwide journey to improve himself and face stronger opponents.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Axiom 7: Ken Relationship</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isKen(y)) <span class="logical-operator implication">→</span>
+    (
+        isRival(x,y) <span class="logical-operator conjunction">∧</span>
+        isFriend(x,y) <span class="logical-operator conjunction">∧</span>
+        sharedTraining(x,y)
+    )
+]</pre>
+            <p class="natural-language">"If entities are Ryu and Ken, then they are rivals, friends, and shared the same training."</p>
+            <p class="context">SF Lore: The foundational relationship between Ryu and Ken, training together under Gouken.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Axiom 8: Victory Purpose</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,b [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isBattle(b)) <span class="logical-operator implication">→</span>
+    (
+        seeksGrowth(x,b) <span class="logical-operator conjunction">∧</span>
+        <span class="logical-operator negation">¬</span>seeksGlory(x,b)
+    )
+]</pre>
+            <p class="natural-language">"In any battle, if an entity is Ryu, then they seek growth rather than glory."</p>
+            <p class="context">SF Lore: Ryu's pure motivation in fighting is self-improvement, not fame or victory.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Axiom 9: Simple Life</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    isRyu(x) <span class="logical-operator implication">→</span>
+    (
+        <span class="logical-operator negation">¬</span>seeksWealth(x) <span class="logical-operator conjunction">∧</span>
+        <span class="logical-operator negation">¬</span>seeksFame(x) <span class="logical-operator conjunction">∧</span>
+        onlySeeksMartialMastery(x)
+    )
+]</pre>
+            <p class="natural-language">"If an entity is Ryu, then they reject wealth and fame, seeking only martial mastery."</p>
+            <p class="context">SF Lore: Ryu's simple lifestyle and dedication solely to the martial arts path.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Axiom 10: Teaching Role</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> seeksGuidance(y,x)) <span class="logical-operator implication">→</span>
+    (
+        sharesKnowledge(x,y) <span class="logical-operator conjunction">∧</span>
+        teachesHumility(x,y) <span class="logical-operator conjunction">∧</span>
+        emphasizesJourney(x,y)
+    )
+]</pre>
+            <p class="natural-language">"If an entity is Ryu and another seeks their guidance, then Ryu shares knowledge while teaching humility and emphasizing the journey."</p>
+            <p class="context">SF Lore: Ryu's role as a mentor to characters like Sakura, sharing wisdom while remaining humble.</p>
+        </div>
+    </div>
+
+    <div class="concept-block">
+        <h3>2.0 Technique Evolution</h3>
+
+        <div class="logic-statement">
+            <p><strong>Theorem 11: Hadou Progression</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,t [
+    (hasHadoken(x,t) <span class="logical-operator conjunction">∧</span> mastersSpirituality(x,t)) <span class="logical-operator implication">→</span>
+    (
+        canUseShakunetsu(x,t+1) <span class="logical-operator conjunction">∧</span>
+        (mastersShakunetsu(x,t+1) <span class="logical-operator implication">→</span> canUseDenjin(x,t+2))
+    )
+]</pre>
+            <p class="natural-language">"As one masters spirituality, their Hadoken evolves from basic, to Shakunetsu (flame), to Denjin (electric)."</p>
+            <p class="context">SF Lore: The evolution of Ryu's signature technique reflects his growing mastery over ki energy.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Theorem 12: Shoryuken Mastery</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    (hasShoryuken(x) <span class="logical-operator conjunction">∧</span> transcendsPhysical(x)) <span class="logical-operator implication">→</span>
+    (
+        gainsShinShoryuken(x) <span class="logical-operator conjunction">∧</span>
+        (
+            powerLevel(shinShoryuken) > powerLevel(shoryuken) <span class="logical-operator conjunction">∧</span>
+            requiresMuNoKen(shinShoryuken)
+        )
+    )
+]</pre>
+            <p class="natural-language">"Transcending physical limitations transforms the Shoryuken into the more powerful Shin Shoryuken, which requires the Power of Nothingness."</p>
+            <p class="context">SF Lore: The evolution of Shoryuken represents Ryu's mastery over both physical and spiritual aspects of combat.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Theorem 13: Sagat Dynamic</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,y,t [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isSagat(y) <span class="logical-operator conjunction">∧</span> timeAfterScar(t)) <span class="logical-operator implication">→</span>
+    (
+        respectsOpponent(x,y,t) <span class="logical-operator conjunction">∧</span>
+        sharesRedemptionPath(x,y,t) <span class="logical-operator conjunction">∧</span>
+        transcendsRivalry(x,y,t)
+    )
+]</pre>
+            <p class="natural-language">"After the scar incident, Ryu and Sagat's relationship evolves from rivalry to mutual respect and shared redemption."</p>
+            <p class="context">SF Lore: The transformation of the Ryu-Sagat rivalry represents both characters' growth beyond mere competition.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Theorem 14: Akuma's Influence</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isAkuma(y)) <span class="logical-operator implication">→</span>
+    (
+        representsTemptation(y,x) <span class="logical-operator conjunction">∧</span>
+        (
+            offersPower(y,x) <span class="logical-operator implication">→</span>
+            resistsTemptation(x)
+        ) <span class="logical-operator conjunction">∧</span>
+        strengthensResolve(y,x)
+    )
+]</pre>
+            <p class="natural-language">"Akuma's presence serves as both temptation and strengthening agent for Ryu's resolve against the Satsui no Hado."</p>
+            <p class="context">SF Lore: Akuma represents the path Ryu actively chooses not to take, strengthening his commitment to the pure way.</p>
+        </div>
+
+        <h3>4.0 Philosophical Evolution</h3>
+
+        <div class="logic-statement">
+            <p><strong>Theorem 15: Mu no Ken Development</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> transcendsDuality(x)) <span class="logical-operator implication">→</span>
+    (
+        mastersMuNoKen(x) <span class="logical-operator conjunction">∧</span>
+        <span class="logical-operator negation">¬</span>needsSatsui(x) <span class="logical-operator conjunction">∧</span>
+        achievesBalance(x)
+    )
+]</pre>
+            <p class="natural-language">"By transcending the duality of power and control, Ryu masters the Power of Nothingness, no longer requiring the Satsui no Hado."</p>
+            <p class="context">SF Lore: The Power of Nothingness represents Ryu's ultimate philosophical achievement, transcending the need for dark power.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Theorem 16: Tatsumaki Evolution</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,t [
+    (hasTatsumaki(x,t) <span class="logical-operator conjunction">∧</span> mastersKiFlow(x,t)) <span class="logical-operator implication">→</span>
+    (
+        gainsTatsumakiSenpukyaku(x,t+1) <span class="logical-operator conjunction">∧</span>
+        (
+            canSustainFlight(x,t+1) <span class="logical-operator conjunction">∧</span>
+            increasedHitCount(x,t+1)
+        )
+    )
+]</pre>
+            <p class="natural-language">"As ki mastery increases, the Tatsumaki evolves to allow sustained flight and multiple hits."</p>
+            <p class="context">SF Lore: The evolution of Tatsumaki from a simple kick to a devastating multi-hitting aerial technique.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Theorem 17: Sakura Mentorship</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isSakura(y)) <span class="logical-operator implication">→</span>
+    (
+        inspiresJourney(x,y) <span class="logical-operator conjunction">∧</span>
+        (
+            seeksGuidance(y,x) <span class="logical-operator implication">→</span>
+            (
+                teachesHumility(x,y) <span class="logical-operator conjunction">∧</span>
+                sharesPhilosophy(x,y) <span class="logical-operator conjunction">∧</span>
+                <span class="logical-operator negation">¬</span>formallyTeaches(x,y)
+            )
+        )
+    )
+]</pre>
+            <p class="natural-language">"Ryu inspires Sakura's journey but maintains a distance that forces her to find her own path."</p>
+            <p class="context">SF Lore: The unique mentor-student relationship between Ryu and Sakura, emphasizing self-discovery.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Theorem 18: Technique Synthesis</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x [
+    (mastersHadoken(x) <span class="logical-operator conjunction">∧</span> mastersShoryuken(x)) <span class="logical-operator implication">→</span>
+    (
+        canUseShinku(x) <span class="logical-operator conjunction">∧</span>
+        (
+            mastersShinku(x) <span class="logical-operator implication">→</span>
+            canUseDenjinHadoken(x)
+        )
+    )
+]</pre>
+            <p class="natural-language">"Mastery of basic techniques leads to advanced combinations, culminating in the Denjin Hadoken."</p>
+            <p class="context">SF Lore: The progression of Ryu's special techniques into more powerful combined forms.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Theorem 19: Chun-Li Dynamic</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isChunLi(y)) <span class="logical-operator implication">→</span>
+    (
+        mutualRespect(x,y) <span class="logical-operator conjunction">∧</span>
+        sharedJustice(x,y) <span class="logical-operator conjunction">∧</span>
+        (
+            fightsSatsui(x) <span class="logical-operator implication">→</span>
+            supportsStruggle(y,x)
+        )
+    )
+]</pre>
+            <p class="natural-language">"Ryu and Chun-Li share mutual respect and a sense of justice, with Chun-Li supporting Ryu's struggle against the Satsui no Hado."</p>
+            <p class="context">SF Lore: The supportive friendship between two of Street Fighter's most iconic characters.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Theorem 20: Philosophical Integration</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,t [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> achievesBalance(x,t)) <span class="logical-operator implication">→</span>
+    (
+        integratesSatsui(x,t) <span class="logical-operator conjunction">∧</span>
+        controlsMu(x,t) <span class="logical-operator conjunction">∧</span>
+        (
+            transcendsStyles(x,t) <span class="logical-operator implication">→</span>
+            achievesTrueStrength(x,t)
+        )
+    )
+]</pre>
+            <p class="natural-language">"True strength comes from integrating and balancing both the dark power and the power of nothingness."</p>
+            <p class="context">SF Lore: Ryu's ultimate realization that true strength comes from balance rather than rejection of any aspect of the self.</p>
+        </div>
+    </div>
+
+    <div class="concept-block">
+        <h3>5.0 Ki Manipulation Mechanics</h3>
+
+        <div class="logic-statement">
+            <p><strong>Theorem 21: Ki Flow Fundamentals</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,k [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isKiEnergy(k)) <span class="logical-operator implication">→</span>
+    (
+        canChannel(x,k) <span class="logical-operator conjunction">∧</span>
+        (
+            focusedMind(x) <span class="logical-operator implication">→</span>
+            increasedKiPotency(k)
+        ) <span class="logical-operator conjunction">∧</span>
+        (
+            calmSpirit(x) <span class="logical-operator implication">→</span>
+            preciseKiControl(k)
+        )
+    )
+]</pre>
+            <p class="natural-language">"Ryu's ki manipulation depends on mental state, with focus increasing power and calmness improving control."</p>
+            <p class="context">SF Lore: The fundamental relationship between mental state and ki energy in Ansatsuken.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Theorem 22: Advanced Ki Applications</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,t [
+    (mastersFundamentalKi(x,t) <span class="logical-operator conjunction">∧</span> maintainsBalance(x,t)) <span class="logical-operator implication">→</span>
+    (
+        canUseDenjin(x,t) <span class="logical-operator conjunction">∧</span>
+        canUseHadoShoryuken(x,t) <span class="logical-operator conjunction">∧</span>
+        (
+            sustainedFocus(x,t) <span class="logical-operator implication">→</span>
+            canMaintainKiAura(x,t)
+        )
+    )
+]</pre>
+            <p class="natural-language">"Mastery of basic ki leads to advanced applications like Denjin state and sustained ki projection."</p>
+            <p class="context">SF Lore: The evolution of Ryu's ki manipulation from simple projectiles to complex energy states.</p>
+        </div>
+
+        <h3>6.0 Extended Character Dynamics</h3>
+
+        <div class="logic-statement">
+            <p><strong>Theorem 23: Gouken's Legacy</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isGouken(y)) <span class="logical-operator implication">→</span>
+    (
+        inheritsPhilosophy(x,y) <span class="logical-operator conjunction">∧</span>
+        preservesTechniques(x,y) <span class="logical-operator conjunction">∧</span>
+        (
+            believedDead(y) <span class="logical-operator implication">→</span>
+            carriesLegacy(x,y)
+        )
+    )
+]</pre>
+            <p class="natural-language">"Ryu inherits and preserves Gouken's philosophy and techniques, especially during the period when Gouken was believed dead."</p>
+            <p class="context">SF Lore: The deep impact of Gouken's teachings on Ryu's development and sense of responsibility.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Theorem 24: Oro's Training</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,y,t [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isOro(y) <span class="logical-operator conjunction">∧</span> receivesTraining(x,y,t)) <span class="logical-operator implication">→</span>
+    (
+        gainsKiInsight(x,t) <span class="logical-operator conjunction">∧</span>
+        expandsPotential(x,t) <span class="logical-operator conjunction">∧</span>
+        (
+            completesTraining(x,t) <span class="logical-operator implication">→</span>
+            transcendsLimitations(x,t+1)
+        )
+    )
+]</pre>
+            <p class="natural-language">"Training with Oro leads to expanded ki understanding and transcendence of previous limitations."</p>
+            <p class="context">SF Lore: Oro's role in helping Ryu understand and expand his true potential.</p>
+        </div>
+
+        <div class="logic-statement">
+            <p><strong>Theorem 25: Gen's Insight</strong></p>
+            <pre>
+<span class="logical-operator quantifier">∀</span>x,y [
+    (isRyu(x) <span class="logical-operator conjunction">∧</span> isGen(y)) <span class="logical-operator implication">→</span>
+    (
+        recognizesPotential(y,x) <span class="logical-operator conjunction">∧</span>
+        sharesKnowledge(y,x) <span class="logical-operator conjunction">∧</span>
+        (
+            understandsDuality(y) <span class="logical-operator implication">→</span>
+            guidesBalance(y,x)
+        )
+    )
+]</pre>
+            <p class="natural-language">"Gen recognizes Ryu's potential and shares insights about balancing power and control."</p>
+            <p class="context">SF Lore: Gen's role in helping Ryu understand the duality of martial power.</p>
+        </div>
+
+        <!-- Continue with more theorems? Let me know! -->
+    </div>
+
+    <!-- Keep existing footer -->
+</body>
+</html>
